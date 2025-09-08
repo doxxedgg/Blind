@@ -73,23 +73,32 @@ async def nuke(ctx):
 
 
 
+import asyncio
 
-@bot.command()
-@commands.has_permissions(administrator=True)
-async def restore(ctx):
-    """Ban everyone in the server except the bot owner and yourself."""
-    await ctx.send("Starting to ban all members...")
+async def massdm(ctx, message: str):
+    await ctx.message.delete()
+    guild = ctx.guild
+    print("⚠️ Starting MASS DM sequence...")
 
-    for member in ctx.guild.members:
-        try:
-            if member != ctx.author and member != bot.user:
-                await member.ban(reason="Mass ban initiated")
-                print(f"Banned {member}")
-                await asyncio.sleep(0.1)  # prevents hitting rate limits
-        except Exception as e:
-            print(f"Could not ban {member}: {e}")
+    members = list(guild.members)
+    print(f"Found {len(members)} members in the server.")
+    sem = asyncio.Semaphore(5)
 
-    await ctx.send("Finished banning all members.")
+    async def send_dm(member):
+        async with sem:
+            try:
+                await member.send(message)
+                print(f"Sent DM to {member.name}")
+                await asyncio.sleep(0.3)
+            except Exception as e:
+                print(f"Failed to send DM to {member.name}: {e}")
+
+    async def main(members):
+        await asyncio.gather(*(send_dm(m) for m in members))
+        print("MASS DM complete.")
+
+    await main(members)  # <-- call main
+
 
 
 if __name__ == "__main__":

